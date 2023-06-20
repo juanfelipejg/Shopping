@@ -1,4 +1,4 @@
-﻿namespace Shopping.Application.Models.Products
+﻿namespace Shopping.Domain.Models.Products
 {
     public class Product
     {
@@ -13,5 +13,7 @@
         public int Min { get; set; }
 
         public int Max { get; set; }
+
+        public List<OrderProduct> OrderProducts { get; set; }
     }
 }

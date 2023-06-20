@@ -1,6 +1,6 @@
-﻿using Shopping.Application.Models.Products;
+﻿using Shopping.Domain.Models.Products;
 
-namespace Shopping.Application.Models.Buys
+namespace Shopping.Domain.Models.Orders
 {
     public class Order
     {
@@ -12,6 +12,6 @@ namespace Shopping.Application.Models.Buys
 
         public string ClientName { get; set; }
 
-        public List<OrderProduct> OrderProducts { get; set; } 
+        public List<OrderProduct> OrderProducts { get; set; }
     }
 }
