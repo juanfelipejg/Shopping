@@ -16,33 +16,33 @@ namespace Shopping.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<Product> GetAll()
+		public IEnumerable<Product> GetProducts()
 		{
-			return this._productService.GetAll();
+			return this._productService.GetProducts();
 		}
 
-		//[HttpGet]
-		//public Product GetById( int id )
-		//{
-		//	//return this._productService.GetById( id );
-		//}
+		[HttpGet( "{id}" )]
+		public async Task<Product> GetProduct( int id )
+		{
+			return await this._productService.GetProduct( id );
+		}
 
 		[HttpPost]
 		public Product Create( Product product )
 		{
-			return this._productService.Add( product );
+			return this._productService.AddProduct( product );
 		}
 
-		//[HttpPut]
-		//public Product Update( Product product )
-		//{
-		//	return this._productService.Update( product );
-		//}
+		[HttpPut]
+		public Product Update( Product product )
+		{
+			return this._productService.UpdateProduct( product );
+		}
 
-		//[HttpDelete]
-		//public void Delete( int id )
-		//{
-		//	this._productService.Delete( id );
-		//}
+		[HttpDelete]
+		public void Delete( int id )
+		{
+			this._productService.DeleteProduct( id );
+		}
 	}
 }
