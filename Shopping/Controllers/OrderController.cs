@@ -24,13 +24,13 @@ namespace Shopping.Controllers
 		[HttpGet( "{id}" )]
 		public async Task<Order> GetOrder( int id )
 		{
-			return await this._orderService.GetOrder( id );
+			return await this._orderService.GetOrderAsync( id );
 		}
 
 		[HttpPost]
-		public Order PostOrder( Order order )
+		public Task<Order> PostOrder( Order order )
 		{
-			return this._orderService.CreateOrder( order );
+			return this._orderService.CreateOrderAsync( order );
 		}
 	}
 }

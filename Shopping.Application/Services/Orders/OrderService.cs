@@ -1,16 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shopping.Domain.Models.Orders;
-using Shopping.Infrastructure.Data;
-
-namespace Shopping.Application.Services.Orders
+﻿namespace Shopping.Application.Services.Orders
 {
+	using Microsoft.EntityFrameworkCore;
+	using Products;
+	using Shopping.Domain.Models.Orders;
+	using Shopping.Domain.Models.Products;
+	using Shopping.Infrastructure.Data;
+
 	public class OrderService: IOrderService
 	{
 		private readonly ShoppingContext _context;
+		private readonly IProductService _productService;
 
-		public OrderService( ShoppingContext context )
+		public OrderService( ShoppingContext context, IProductService productService )
 		{
 			this._context = context;
+			this._productService = productService;
 		}
 
 		public IEnumerable<Order> GetOrders()
@@ -18,17 +22,52 @@ namespace Shopping.Application.Services.Orders
 			return this._context.Orders.Select( o => o ).Include( o => o.OrderProducts );
 		}
 
-		public async Task<Order> GetOrder( int id )
+		public async Task<Order> GetOrderAsync( int id )
 		{
 			return await this._context.Orders.FirstOrDefaultAsync( o => o.Id == id );
 		}
 
-		public Order CreateOrder( Order product )
+		public async Task<Order> CreateOrderAsync( Order order )
 		{
-			var productCreated = this._context.Orders.Add( product ).Entity;
+			await this.ValidateInventory( order.OrderProducts );
+
+			Order orderCreated = this._context.Orders.Add( order ).Entity;
+
+			await this.UpdateInventory( order.OrderProducts );
+
 			this._context.SaveChanges();
 
-			return productCreated;
+			return orderCreated;
+		}
+
+		private async Task UpdateInventory( List<OrderProduct> orderProducts )
+		{
+			foreach ( OrderProduct product in orderProducts )
+			{
+				Product productToUpdate = await this._productService.GetProduct( product.ProductId );
+
+				productToUpdate.Inventory -= product.Quantity;
+
+				this._productService.UpdateProduct( productToUpdate );
+			}
+		}
+
+		private async Task ValidateInventory( IEnumerable<OrderProduct> orderProducts )
+		{
+			foreach( OrderProduct orderProduct in orderProducts )
+			{
+				Product product = await this._productService.GetProduct( orderProduct.ProductId );
+
+				if( product.Inventory < orderProduct.Quantity )
+				{
+					throw new Exception( $"No hay suficiente {product.Name}" );
+				}
+
+				if( orderProduct.Quantity > product.Max || orderProduct.Quantity < product.Min )
+				{
+					throw new Exception( $"{product.Name} no cumple con el maximo ({product.Max}) o minimo ({product.Min}) permitido" );
+				}
+			}
 		}
 	}
 }

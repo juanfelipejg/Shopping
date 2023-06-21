@@ -6,8 +6,8 @@ namespace Shopping.Application.Services.Orders
 	{
 		IEnumerable<Order> GetOrders();
 
-		Task<Order> GetOrder( int id );
+		Task<Order> GetOrderAsync( int id );
 
-		Order CreateOrder( Order product );
+		Task<Order> CreateOrderAsync( Order product );
 	}
 }
