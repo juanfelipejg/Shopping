@@ -15,10 +15,10 @@ namespace Shopping.Controllers
 			this._productService = productService;
 		}
 
-		[HttpGet]
-		public IEnumerable<Product> GetProducts()
+		[HttpGet( "{pageNumber}/{pageSize}" )]
+		public IEnumerable<Product> GetProducts( int pageNumber = 1, int pageSize = 10 )
 		{
-			return this._productService.GetProducts();
+			return this._productService.GetProducts( pageNumber, pageSize );
 		}
 
 		[HttpGet( "{id}" )]
