@@ -4,14 +4,14 @@ namespace Shopping.Application.Services.Products
 {
 	public interface IProductService
 	{
-		IEnumerable<Product> Get();
+		IEnumerable<Product> GetAll();
 
-		Product GetById( int id );
+		Task<Product> GetByIdAsync( int id );
 
 		Product Add( Product product );
 
-		Product Update( Product product );
+		//Product Update( Product product );
 
-		void Delete( int id );
+		//void Delete( int id );
 	}
 }

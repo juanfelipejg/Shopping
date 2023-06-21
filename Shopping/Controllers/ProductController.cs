@@ -16,16 +16,16 @@ namespace Shopping.Controllers
 		}
 
 		[HttpGet]
-		public IEnumerable<Product> Get()
+		public IEnumerable<Product> GetAll()
 		{
-			return this._productService.Get();
+			return this._productService.GetAll();
 		}
 
-		[HttpGet]
-		public Product Get( int id )
-		{
-			return this._productService.GetById( id );
-		}
+		//[HttpGet]
+		//public Product GetById( int id )
+		//{
+		//	//return this._productService.GetById( id );
+		//}
 
 		[HttpPost]
 		public Product Create( Product product )
@@ -33,16 +33,16 @@ namespace Shopping.Controllers
 			return this._productService.Add( product );
 		}
 
-		[HttpPut]
-		public Product Update( Product product )
-		{
-			return this._productService.Update( product );
-		}
+		//[HttpPut]
+		//public Product Update( Product product )
+		//{
+		//	return this._productService.Update( product );
+		//}
 
-		[HttpDelete]
-		public void Delete( int id )
-		{
-			this._productService.Delete( id );
-		}
+		//[HttpDelete]
+		//public void Delete( int id )
+		//{
+		//	this._productService.Delete( id );
+		//}
 	}
 }

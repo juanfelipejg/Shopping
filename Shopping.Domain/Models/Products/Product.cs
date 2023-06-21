@@ -1,4 +1,6 @@
-﻿namespace Shopping.Domain.Models.Products
+﻿using System.Runtime.Serialization;
+
+namespace Shopping.Domain.Models.Products
 {
     public class Product
     {
@@ -14,6 +16,7 @@
 
         public int Max { get; set; }
 
-        public List<OrderProduct> OrderProducts { get; set; }
+		[IgnoreDataMember]
+        public List<OrderProduct>? OrderProducts { get; set; }
     }
 }

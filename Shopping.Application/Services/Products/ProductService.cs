@@ -1,32 +1,42 @@
-﻿using Shopping.Domain.Models.Products;
-
-namespace Shopping.Application.Services.Products
+﻿namespace Shopping.Application.Services.Products
 {
+	using Shopping.Domain.Models.Products;
+	using Shopping.Infrastructure.Data;
+
 	public class ProductService: IProductService
 	{
+		private readonly ShoppingContext _context;
+
+		public ProductService( ShoppingContext context )
+		{
+			this._context = context;
+		}
+
 		public Product Add( Product product )
 		{
-			throw new NotImplementedException();
+			this._context.Products.Add( product );
+			this._context.SaveChanges();
+			return product;
 		}
 
-		public void Delete( int id )
+		//public void Delete( int id )
+		//{
+		//	throw new NotImplementedException();
+		//}
+
+		public IEnumerable<Product> GetAll()
 		{
-			throw new NotImplementedException();
+			return this._context.Products.Select( p => p );
 		}
 
-		public IEnumerable<Product> Get()
+		public async Task<Product> GetByIdAsync( int id )
 		{
-			throw new NotImplementedException();
+			return await this._context.Products.FindAsync( id );
 		}
 
-		public Product GetById( int id )
-		{
-			throw new NotImplementedException();
-		}
-
-		public Product Update( Product product )
-		{
-			throw new NotImplementedException();
-		}
+		//public Product Update( Product product )
+		//{
+		//	throw new NotImplementedException();
+		//}
 	}
 }

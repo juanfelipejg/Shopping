@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Shopping.Application.Services.Products;
+using Shopping.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IProductService, ProductService>();
+
+string connectionString = builder.Configuration.GetConnectionString( "Default" );
+builder.Services.AddDbContext<ShoppingContext>( context => context.UseSqlServer( connectionString ) );
 
 var app = builder.Build();
 
