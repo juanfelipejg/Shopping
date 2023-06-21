@@ -1,32 +1,34 @@
-﻿using Shopping.Domain.Models.Orders;
+﻿using Microsoft.EntityFrameworkCore;
+using Shopping.Domain.Models.Orders;
+using Shopping.Infrastructure.Data;
 
 namespace Shopping.Application.Services.Orders
 {
-	internal class OrderService: IOrderService
+	public class OrderService: IOrderService
 	{
-		public Order Add( Order product )
+		private readonly ShoppingContext _context;
+
+		public OrderService( ShoppingContext context )
 		{
-			throw new NotImplementedException();
+			this._context = context;
 		}
 
-		public void Delete( string id )
+		public IEnumerable<Order> GetOrders()
 		{
-			throw new NotImplementedException();
+			return this._context.Orders.Select( o => o ).Include( o => o.OrderProducts );
 		}
 
-		public IEnumerable<Order> Get()
+		public async Task<Order> GetOrder( int id )
 		{
-			throw new NotImplementedException();
+			return await this._context.Orders.FirstOrDefaultAsync( o => o.Id == id );
 		}
 
-		public Order GetById( int id )
+		public Order CreateOrder( Order product )
 		{
-			throw new NotImplementedException();
-		}
+			var productCreated = this._context.Orders.Add( product ).Entity;
+			this._context.SaveChanges();
 
-		public Order Update( Order product )
-		{
-			throw new NotImplementedException();
+			return productCreated;
 		}
 	}
 }

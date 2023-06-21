@@ -28,19 +28,19 @@ namespace Shopping.Controllers
 		}
 
 		[HttpPost]
-		public Product Create( Product product )
+		public Product CreateProduct( Product product )
 		{
-			return this._productService.AddProduct( product );
+			return this._productService.CreateProduct( product );
 		}
 
 		[HttpPut]
-		public Product Update( Product product )
+		public Product UpdateProduct( Product product )
 		{
 			return this._productService.UpdateProduct( product );
 		}
 
 		[HttpDelete]
-		public void Delete( int id )
+		public void DeleteProduct( int id )
 		{
 			this._productService.DeleteProduct( id );
 		}

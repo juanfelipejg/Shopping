@@ -12,7 +12,7 @@
 			this._context = context;
 		}
 
-		public Product AddProduct( Product product )
+		public Product CreateProduct( Product product )
 		{
 			this._context.Products.Add( product );
 			this._context.SaveChanges();

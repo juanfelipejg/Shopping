@@ -4,14 +4,10 @@ namespace Shopping.Application.Services.Orders
 {
 	public interface IOrderService
 	{
-		IEnumerable<Order> Get();
+		IEnumerable<Order> GetOrders();
 
-		Order GetById( int id );
+		Task<Order> GetOrder( int id );
 
-		Order Add( Order product );
-
-		Order Update( Order product );
-
-		void Delete( string id );
+		Order CreateOrder( Order product );
 	}
 }

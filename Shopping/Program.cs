@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Shopping.Application.Services.Orders;
 using Shopping.Application.Services.Products;
 using Shopping.Infrastructure.Data;
 
@@ -10,7 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 string connectionString = builder.Configuration.GetConnectionString( "Default" );
 builder.Services.AddDbContext<ShoppingContext>( context => context.UseSqlServer( connectionString ) );

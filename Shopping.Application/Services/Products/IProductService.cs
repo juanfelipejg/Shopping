@@ -8,7 +8,7 @@ namespace Shopping.Application.Services.Products
 
 		Task<Product> GetProduct( int id );
 
-		Product AddProduct( Product product );
+		Product CreateProduct( Product product );
 
 		Product UpdateProduct( Product product );
 

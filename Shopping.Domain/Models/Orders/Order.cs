@@ -8,7 +8,7 @@ namespace Shopping.Domain.Models.Orders
 
         public DateTime Date { get; set; }
 
-        public IdentificationEnum IdType { get; set; }
+        public string IdType { get; set; }
 
         public string ClientName { get; set; }
 
