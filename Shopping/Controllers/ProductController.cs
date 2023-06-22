@@ -24,7 +24,7 @@ namespace Shopping.Controllers
 		[HttpGet( "{id}" )]
 		public async Task<Product> GetProduct( int id )
 		{
-			return await this._productService.GetProduct( id );
+			return await this._productService.GetProductAsync( id );
 		}
 
 		[HttpPost]

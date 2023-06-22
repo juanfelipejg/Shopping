@@ -1,3 +1,5 @@
+using Microsoft.Data.SqlClient;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Shopping.Application.Services.Orders;
 using Shopping.Application.Services.Products;
@@ -15,7 +17,8 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 string connectionString = builder.Configuration.GetConnectionString( "Default" );
-builder.Services.AddDbContext<ShoppingContext>( context => context.UseSqlServer( connectionString ) );
+builder.Services.AddDbContext<ShoppingContext>( context => context.UseSqlServer( connectionString ) ); 
+builder.Services.AddTransient<IDbConnection>( sp => new SqlConnection( connectionString ) );
 
 var app = builder.Build();
 

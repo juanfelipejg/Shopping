@@ -1,15 +1,19 @@
 ﻿namespace Shopping.Application.Services.Products
 {
+	using System.Data;
+	using Dapper;
 	using Shopping.Domain.Models.Products;
 	using Shopping.Infrastructure.Data;
 
 	public class ProductService: IProductService
 	{
 		private readonly ShoppingContext _context;
+		private readonly IDbConnection _connection;
 
-		public ProductService( ShoppingContext context )
+		public ProductService( ShoppingContext context, IDbConnection dbConnection )
 		{
 			this._context = context;
+			this._connection = dbConnection;
 		}
 
 		public IEnumerable<Product> GetProducts( int pageNumber, int pageSize )
@@ -19,9 +23,10 @@
 										 .ToList();
 		}
 
-		public async Task<Product> GetProduct( int id )
+		public async Task<Product> GetProductAsync( int id )
 		{
-			return await this._context.Products.FindAsync( id );
+			string query = "SELECT * FROM Products WHERE Id = @Id";
+			return await this._connection.QuerySingleOrDefaultAsync<Product>( query, new { Id = id } );
 		}
 
 		public Product CreateProduct( Product product )
