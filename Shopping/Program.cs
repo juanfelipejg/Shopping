@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopping.Application.Services.Orders;
 using Shopping.Application.Services.Products;
 using Shopping.Infrastructure.Data;
+using Shopping.Infrastructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 string connectionString = builder.Configuration.GetConnectionString( "Default" );
 builder.Services.AddDbContext<ShoppingContext>( context => context.UseSqlServer( connectionString ) ); 
 builder.Services.AddTransient<IDbConnection>( sp => new SqlConnection( connectionString ) );
+builder.Services.AddTransient<IRepositoryProduct, RepositoryProduct>();
 
 var app = builder.Build();
 

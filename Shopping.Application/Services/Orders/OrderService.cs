@@ -19,25 +19,58 @@
 
 		public IEnumerable<Order> GetOrders()
 		{
-			return this._context.Orders.Select( o => o ).Include( o => o.OrderProducts );
+			try
+			{
+				return this._context.Orders.Select( o => o ).Include( o => o.OrderProducts ).ThenInclude( op => op.Product );
+			}
+			catch( DbUpdateException ex )
+			{
+				throw new Exception( "Un error ocurrió mientras se consultaba las ordenes", ex );
+			}
 		}
 
 		public async Task<Order> GetOrderAsync( int id )
 		{
-			return await this._context.Orders.FirstOrDefaultAsync( o => o.Id == id );
+			var order = await this._context.Orders.Include( o => o.OrderProducts ).ThenInclude( op => op.Product ).FirstOrDefaultAsync( o => o.Id == id );
+			
+			if ( order != null ) 
+			{
+				try
+				{
+					return order;
+				}
+
+				catch( DbUpdateException ex )
+				{
+					throw new Exception( "Un error ocurrió mientras se consultaba la orden", ex );
+				}
+			}
+
+			else
+			{
+				throw new Exception( "Orden no encontrada" );
+			}
 		}
 
 		public async Task<Order> CreateOrderAsync( Order order )
 		{
-			await this.ValidateInventory( order.OrderProducts );
+			try
+			{
+				await this.ValidateInventory( order.OrderProducts );
 
-			Order orderCreated = this._context.Orders.Add( order ).Entity;
+				Order orderCreated = this._context.Orders.Add( order ).Entity;
 
-			this._context.SaveChanges();
+				this._context.SaveChanges();
 
-			await this.UpdateInventory( order.OrderProducts );
+				await this.UpdateInventory( order.OrderProducts );
 
-			return orderCreated;
+				return orderCreated;
+			}
+
+			catch( DbUpdateException ex )
+			{
+				throw new Exception( "Un error ocurrió mientras se creaba la orden", ex );
+			}
 		}
 
 		private async Task UpdateInventory( List<OrderProduct> orderProducts )
