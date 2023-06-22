@@ -6,6 +6,11 @@
 
 	public class ShoppingContext: DbContext
 	{
+		public ShoppingContext()
+		{
+				
+		}
+
 		public ShoppingContext( DbContextOptions<ShoppingContext> options ) : base( options ) { }
 
 		public DbSet<Product> Products { get; set; }

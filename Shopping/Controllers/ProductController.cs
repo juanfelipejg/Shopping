@@ -25,7 +25,7 @@ namespace Shopping.Controllers
 		public IEnumerable<Product> GetProducts( int pageNumber = 1, int pageSize = 10 )
 		{
 			return this._productService.GetProducts( pageNumber, pageSize );
-			
+
 		}
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Shopping.Controllers
 
 			catch( NotFoundException ex )
 			{
-				return this.NotFound(ex.Message);
+				return this.NotFound( ex.Message );
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace Shopping.Controllers
 			}
 			catch( NotFoundException ex )
 			{
-				return this.NotFound(ex.Message );
+				return this.NotFound( ex.Message );
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace Shopping.Controllers
 		/// <param name="id"> containing the product id.</param>
 		/// <response code="200">The product is deleted.</response>
 		/// <response code="404">An product with the specified ID does not exist.</response>
-		[HttpDelete]
+		[HttpDelete( "{id}" )]
 		public IActionResult DeleteProduct( int id )
 		{
 			try
@@ -105,8 +105,8 @@ namespace Shopping.Controllers
 
 			catch( NotFoundException ex )
 			{
-				return this.NotFound(ex.Message );
-			}			
+				return this.NotFound( ex.Message );
+			}
 		}
 	}
 }
