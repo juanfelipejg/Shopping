@@ -25,8 +25,7 @@
 
 		public async Task<Product> GetProductAsync( int id )
 		{
-			string query = "SELECT * FROM Products WHERE Id = @Id";
-			return await this._connection.QuerySingleOrDefaultAsync<Product>( query, new { Id = id } );
+			return await this._context.Products.FindAsync( id );
 		}
 
 		public Product CreateProduct( Product product )
@@ -45,7 +44,7 @@
 
 		public Product UpdateProduct( Product product )
 		{
-			var productToUpdate = this._context.Products.FirstOrDefault( x => x.Id == product.Id );
+			Product productToUpdate = this._context.Products.FirstOrDefault( x => x.Id == product.Id );
 
 			if ( productToUpdate != null )
 			{

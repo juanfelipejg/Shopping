@@ -33,22 +33,22 @@
 
 			Order orderCreated = this._context.Orders.Add( order ).Entity;
 
-			await this.UpdateInventory( order.OrderProducts );
-
 			this._context.SaveChanges();
+
+			await this.UpdateInventory( order.OrderProducts );
 
 			return orderCreated;
 		}
 
 		private async Task UpdateInventory( List<OrderProduct> orderProducts )
 		{
-			foreach ( OrderProduct product in orderProducts )
+			foreach( OrderProduct orderProduct in orderProducts.ToList() )
 			{
-				Product productToUpdate = await this._productService.GetProduct( product.ProductId );
+				Product productToUpdate = await this._productService.GetProductAsync( orderProduct.ProductId );
 
-				productToUpdate.Inventory -= product.Quantity;
+				productToUpdate.Inventory -= orderProduct.Quantity;
 
-				this._productService.UpdateProduct( productToUpdate );
+				_ = this._productService.UpdateProduct( productToUpdate );
 			}
 		}
 
@@ -56,7 +56,7 @@
 		{
 			foreach( OrderProduct orderProduct in orderProducts )
 			{
-				Product product = await this._productService.GetProduct( orderProduct.ProductId );
+				Product product = await this._productService.GetProductAsync( orderProduct.ProductId );
 
 				if( product.Inventory < orderProduct.Quantity )
 				{

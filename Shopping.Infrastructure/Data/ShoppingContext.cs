@@ -17,6 +17,16 @@
 		protected override void OnModelCreating( ModelBuilder modelBuilder )
 		{
 			modelBuilder.Entity<OrderProduct>().HasKey( x => new { x.OrderId, x.ProductId } );
+
+			modelBuilder.Entity<OrderProduct>()
+				.HasOne( po => po.Product )
+				.WithMany( p => p.OrderProducts )
+				.HasForeignKey( po => po.ProductId );
+
+			modelBuilder.Entity<OrderProduct>()
+				.HasOne( po => po.Order )
+				.WithMany( o => o.OrderProducts )
+				.HasForeignKey( po => po.OrderId );
 		}
 	}
 }

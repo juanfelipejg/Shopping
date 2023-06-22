@@ -1,8 +1,9 @@
 ﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Shopping.Domain.Models.Products
 {
-    public class Product
+	public class Product
     {
         public int Id { get; set; }
 
@@ -17,6 +18,7 @@ namespace Shopping.Domain.Models.Products
         public int Max { get; set; }
 
 		[IgnoreDataMember]
+		[JsonIgnore]
         public List<OrderProduct>? OrderProducts { get; set; }
-    }
+	}
 }
