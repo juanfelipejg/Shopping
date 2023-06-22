@@ -48,7 +48,7 @@
 
 			else
 			{
-				throw new Exception( "Orden no encontrada" );
+				throw new NotFoundException( "Orden no encontrada" );
 			}
 		}
 
@@ -93,12 +93,12 @@
 
 				if( product.Inventory < orderProduct.Quantity )
 				{
-					throw new Exception( $"No hay suficiente {product.Name}" );
+					throw new BadRequestException( $"No hay suficiente {product.Name}" );
 				}
 
 				if( orderProduct.Quantity > product.Max || orderProduct.Quantity < product.Min )
 				{
-					throw new Exception( $"{product.Name} no cumple con el maximo ({product.Max}) o minimo ({product.Min}) permitido" );
+					throw new BadRequestException( $"{product.Name} no cumple con el maximo ({product.Max}) o minimo ({product.Min}) permitido" );
 				}
 			}
 		}

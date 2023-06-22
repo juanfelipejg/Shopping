@@ -48,7 +48,7 @@
 
 			else
 			{
-				throw new Exception( "Producto no encontrado" );
+				throw new NotFoundException( "Producto no encontrado" );
 			}
 		}
 
@@ -86,7 +86,7 @@
 
 			else
 			{
-				throw new Exception( "Producto no encontrado" );
+				throw new NotFoundException( "Producto no encontrado" );
 			}
 		}
 
@@ -117,7 +117,7 @@
 
 			else
 			{
-				throw new Exception( "Producto no encontrado" );
+				throw new NotFoundException( "Producto no encontrado" );
 			}			
 		}
 	}
