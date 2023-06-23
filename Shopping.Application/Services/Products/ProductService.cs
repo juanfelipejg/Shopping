@@ -1,6 +1,6 @@
 ﻿namespace Shopping.Application.Services.Products
 {
-	using Microsoft.Data.SqlClient;	
+	using Microsoft.Data.SqlClient;
 	using Microsoft.EntityFrameworkCore;
 	using Shopping.Domain.Models.Products;
 	using Shopping.Infrastructure.Data;
@@ -8,26 +8,26 @@
 
 	public class ProductService: IProductService
 	{
-		private readonly ShoppingContext _context;
+		private readonly IShoppingContext _context;
 		private readonly IRepositoryProduct _repositoryProduct;
 
-		public ProductService( ShoppingContext context, IRepositoryProduct repositoryProduct )
+		public ProductService( IShoppingContext context, IRepositoryProduct repositoryProduct )
 		{
 			this._context = context;
 			this._repositoryProduct = repositoryProduct;
 		}
 
-		public IEnumerable<Product> GetProducts( int pageNumber, int pageSize ) 
+		public IEnumerable<Product> GetProducts( int pageNumber, int pageSize )
 		{
 			try
 			{
 				return this._repositoryProduct.GetProducts( pageNumber, pageSize );
 			}
 
-			catch ( SqlException ex )
+			catch( SqlException ex )
 			{
 				throw new Exception( "Un error ocurrió mientras se consultaban los productos", ex );
-			}			
+			}
 		}
 
 		public async Task<Product> GetProductAsync( int id )
@@ -69,9 +69,9 @@
 
 		public void DeleteProduct( int id )
 		{
-			Product? product = this._context.Products.FirstOrDefault( x => x.Id == id );
+			Product? product = this._context.Products.Find( id );
 
-			if ( product != null )
+			if( product != null )
 			{
 				try
 				{
@@ -92,9 +92,9 @@
 
 		public Product UpdateProduct( Product product )
 		{
-			Product? productToUpdate = this._context.Products.FirstOrDefault( x => x.Id == product.Id );
+			Product? productToUpdate = this._context.Products.Find( product.Id );
 
-			if ( productToUpdate != null )
+			if( productToUpdate != null )
 			{
 				try
 				{
@@ -106,10 +106,10 @@
 					productToUpdate.Name = product.Name;
 
 					this._context.SaveChanges();
-					
+
 					return productToUpdate;
 				}
-				catch ( DbUpdateException ex )
+				catch( DbUpdateException ex )
 				{
 					throw new Exception( "Un error ocurrió mientras se actualizaba el producto", ex );
 				}
@@ -118,7 +118,7 @@
 			else
 			{
 				throw new NotFoundException( "Producto no encontrado" );
-			}			
+			}
 		}
 	}
 }

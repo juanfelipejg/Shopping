@@ -8,10 +8,10 @@
 
 	public class OrderService: IOrderService
 	{
-		private readonly ShoppingContext _context;
+		private readonly IShoppingContext _context;
 		private readonly IProductService _productService;
 
-		public OrderService( ShoppingContext context, IProductService productService )
+		public OrderService( IShoppingContext context, IProductService productService )
 		{
 			this._context = context;
 			this._productService = productService;

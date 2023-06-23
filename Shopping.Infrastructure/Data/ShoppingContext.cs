@@ -4,7 +4,7 @@
 	using Shopping.Domain.Models.Orders;
 	using Shopping.Domain.Models.Products;
 
-	public class ShoppingContext: DbContext
+	public class ShoppingContext: DbContext, IShoppingContext
 	{
 		public ShoppingContext()
 		{
