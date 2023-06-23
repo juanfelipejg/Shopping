@@ -8,6 +8,6 @@ namespace Shopping.Application.Services.Orders
 
 		Task<Order> GetOrderAsync( int id );
 
-		Task<Order> CreateOrderAsync( Order product );
+		Task<Order> CreateOrderAsync( Shopping.Dtos.Models.Orders.Order product );
 	}
 }

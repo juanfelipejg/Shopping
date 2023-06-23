@@ -52,25 +52,51 @@
 			}
 		}
 
-		public async Task<Order> CreateOrderAsync( Order order )
+		public async Task<Order> CreateOrderAsync( Shopping.Dtos.Models.Orders.Order order )
 		{
 			try
 			{
-				await this.ValidateInventory( order.OrderProducts );
+				var newOrder = new Order
+				{
+					Date = DateTime.Now,
+					IdType = order.IdType,
+					ClientName = order.ClientName,
+					OrderProducts = this.GetOrderProducts( order.Products )
+				};
 
-				Order orderCreated = this._context.Orders.Add( order ).Entity;
+				await this.ValidateInventory( newOrder.OrderProducts );
+
+				var orderCreated = this._context.Orders.Add( newOrder ).Entity;
 
 				this._context.SaveChanges();
 
-				await this.UpdateInventory( order.OrderProducts );
+				await this.UpdateInventory( newOrder.OrderProducts );
 
-				return orderCreated;
+				return this._context.Orders.Include( o => o.OrderProducts ).
+											ThenInclude( op => op.Product ).
+											FirstOrDefaultAsync( o => o.Id == orderCreated.Id ).Result;
 			}
 
 			catch( DbUpdateException ex )
 			{
 				throw new Exception( "Un error ocurrió mientras se creaba la orden", ex );
 			}
+		}
+
+		private List<OrderProduct> GetOrderProducts( List<Dtos.Models.Orders.OrderProduct> orderProducts )
+		{
+			var newOrderProducts = new List<OrderProduct>();
+
+			foreach( var orderProduct in orderProducts )
+			{
+				newOrderProducts.Add( new OrderProduct
+				{
+					ProductId = orderProduct.ProductId,
+					Quantity = orderProduct.Quantity,
+				} );
+			}
+
+			return newOrderProducts;
 		}
 
 		private async Task UpdateInventory( List<OrderProduct> orderProducts )

@@ -62,7 +62,7 @@
 		[HttpPost]
 		[ProducesResponseType( StatusCodes.Status201Created, Type = typeof( Order ) )]
 		[ProducesResponseType( StatusCodes.Status400BadRequest )]
-		public async Task<IActionResult> PostOrder( Order order )
+		public async Task<IActionResult> PostOrder( Shopping.Dtos.Models.Orders.Order order )
 		{
 			try
 			{
